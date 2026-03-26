@@ -1,4 +1,7 @@
 FROM eclipse-temurin:17-jdk-alpine
-# Lệnh này sẽ lấy file jar vừa build xong trong thư mục target
-COPY target/nguyenhongyenvy_2280603784-0.0.1-SNAPSHOT.jar app.jar
+
+# Dùng dấu * để tự động tìm file .jar trong thư mục target
+COPY target/*.jar app.jar
+
+# Lệnh chạy ứng dụng khi container khởi động
 ENTRYPOINT ["java","-jar","/app.jar"]
