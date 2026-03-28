@@ -35,3 +35,18 @@ jobs:
           context: .
           push: true
           tags: nguyenhongyenvy28/spring-app:bai7-auto
+
+      # --- BƯỚC GỌI HỆ THỐNG TRƯỜNG ĐỂ DEPLOY ---
+      - name: Triển khai lên DevOps Classroom
+        run: |
+          REPO="nguyenhongyenvy28/spring-app"
+          CONTAINER_PORT=80
+          RESPONSE=$(curl -sS -w "\n%{http_code}" -X POST "${{ secrets.DEPLOY_URL }}?repo=$REPO")
+          BODY=$(echo "$RESPONSE" | sed '$ d')
+          CODE=$(echo "$RESPONSE" | tail -n1)
+          echo "Webhook HTTP: $CODE"
+          if [ "$CODE" -lt 200 ] || [ "$CODE" -ge 300 ]; then
+            echo "Deploy thất bại. Xem chi tiết trong log."
+            exit 1
+          fi
+          echo "Deploy thành công."
