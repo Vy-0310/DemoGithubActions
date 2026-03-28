@@ -36,12 +36,13 @@ jobs:
           push: true
           tags: nguyenhongyenvy28/spring-app:bai7-auto
 
-      # --- BƯỚC GỌI HỆ THỐNG TRƯỜNG ĐỂ DEPLOY ---
+      # Bản vá chuẩn 100% khớp với hệ thống của trường
       - name: Triển khai lên DevOps Classroom
         run: |
           REPO="nguyenhongyenvy28/spring-app"
           CONTAINER_PORT=80
-          RESPONSE=$(curl -sS -w "\n%{http_code}" -X POST "${{ secrets.DEPLOY_URL }}?repo=$REPO")
+          TAG="bai7-auto"
+          RESPONSE=$(curl -sS -w "\n%{http_code}" -X POST "${{ secrets.DEPLOY_URL }}?repo=$REPO&tag=$TAG&port=$CONTAINER_PORT")
           BODY=$(echo "$RESPONSE" | sed '$ d')
           CODE=$(echo "$RESPONSE" | tail -n1)
           echo "Webhook HTTP: $CODE"
